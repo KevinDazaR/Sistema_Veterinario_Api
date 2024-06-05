@@ -6,6 +6,7 @@ using FiltroJobs.Data;
 using FiltroJobs.Models;
 using Microsoft.EntityFrameworkCore;
 using FiltroJobs.Services.Owners;
+using FiltroJobs.DTO;
 
 namespace FiltroJobs.Services.Owners
 {
@@ -20,33 +21,54 @@ namespace FiltroJobs.Services.Owners
 
         public IEnumerable<Owner> GetAll()
         {
-            return _context.Owners.ToList();
+            return _context.Owners.Include(p => p.Pets).ToList();
         }
 
         public Owner GetById(int id)
         {
-            return _context.Owners.FirstOrDefault(m => m.Id == id);
+            return _context.Owners.Include(p => p.Pets).FirstOrDefault(p => p.Id == id);
         }
 
-        public void Add(Owner pet)
+        public void Add(OwnerCreateDTO createDTO)
         {
-            _context.Owners.Add(pet);
+            var owner = new Owner
+            {
+                Names = createDTO.Names,
+                LastNames = createDTO.LastNames,
+                Phone = createDTO.Phone,
+                Address =createDTO.Address,
+                Email=createDTO.Email,
+                State=createDTO.State
+            };
+            
+            _context.Owners.Add(owner);
             _context.SaveChanges();
         }
 
-        public void Update(Owner pet)
+        public void Update(int id, OwnerCreateDTO owner)
         {
-            _context.Owners.Update(pet);
-            _context.SaveChanges();
+            var existentOwner = _context.Owners.Find(id);
+
+            if (existentOwner != null)
+            {
+                existentOwner.Names = owner.Names;
+                existentOwner.LastNames = owner.LastNames;
+                existentOwner.Phone = owner.Phone;
+                existentOwner.Address =owner.Address;
+                existentOwner.Email=owner.Email;
+                
+
+                _context.SaveChanges();
+            }
         }
         public void Delete(int id)
         {
-            var pet = _context.Owners.Find(id);
-            if(pet != null)
+            var owner = _context.Owners.Find(id);
+            if(owner != null)
             {
                 //cambiar el estado a inactivo
-                pet.State = "inactive";
-                _context.Owners.Update(pet);
+                owner.State = "inactive";
+                _context.Owners.Update(owner);
                 _context.SaveChanges();
             }
         }

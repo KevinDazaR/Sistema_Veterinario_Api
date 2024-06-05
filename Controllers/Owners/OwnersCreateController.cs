@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FiltroJobs.Services.Owners;
 using FiltroJobs.Models;
+using FiltroJobs.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace FiltroJobs.Controllers
@@ -13,23 +14,23 @@ namespace FiltroJobs.Controllers
     [Route("api/[controller]")]
     public class OwnersCreateController : ControllerBase
     {
-        private readonly IOwnersRepository _petsRepository;
+        private readonly IOwnersRepository _ownersRepository;
 
-        public OwnersCreateController(IOwnersRepository petsRepository)
+        public OwnersCreateController(IOwnersRepository ownersRepository)
         {
-            _petsRepository = petsRepository;
+            _ownersRepository = ownersRepository;
         }
 
          [HttpPost]
-        public IActionResult Create([FromBody]Owner pet)
+        public IActionResult Create([FromBody]OwnerCreateDTO ownerDTO)
         {
-             if (pet == null)
+             if (ownerDTO == null)
             {
                 return BadRequest();
             }
-            _petsRepository.Add(pet);
+            _ownersRepository.Add(ownerDTO);
 
-            return CreatedAtAction(nameof(Create), new {id = pet.Id}, "Owner creada con exito");
+            return CreatedAtAction(nameof(Create), new {ownerDTO}, "Owner creado con exito");
         }
     }
 }

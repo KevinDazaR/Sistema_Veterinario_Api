@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FiltroJobs.Services.Quotes;
+using FiltroJobs.DTO;
 using FiltroJobs.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,15 +22,17 @@ namespace FiltroJobs.Controllers
         }
 
          [HttpPost]
-        public IActionResult Create([FromBody]Quote quote)
+        public IActionResult Create([FromBody]QuoteCreateDTO quoteDTO)
         {
-             if (quote == null)
+             if (quoteDTO == null)
             {
                 return BadRequest();
             }
-            _quotesRepository.Add(quote);
+            _quotesRepository.Add(quoteDTO);
 
-            return CreatedAtAction(nameof(Create), new {id = quote.Id}, "Quote creada con exito");
+             return Ok("Cita creada exitosamente" ); 
+
+            // return CreatedAtAction(nameof(Create), new {quoteDTO}, "Quote creada con exito");
         }
     }
 }

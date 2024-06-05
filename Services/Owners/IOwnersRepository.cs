@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using FiltroJobs.Models;
+using FiltroJobs.DTO;
 
 namespace FiltroJobs.Services.Owners
 {
@@ -10,8 +11,8 @@ namespace FiltroJobs.Services.Owners
     {
          IEnumerable<Owner> GetAll();
          Owner GetById(int id);
-         void Add(Owner pet);
-         void Update(Owner pet);
+         void Add(OwnerCreateDTO ownerDTO);
+         void Update(int id, OwnerCreateDTO ownerDTO);
          void Delete(int id);
     }
 }

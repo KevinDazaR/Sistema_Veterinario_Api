@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using FiltroJobs.Data;
 using FiltroJobs.Models;
 using Microsoft.EntityFrameworkCore;
-using FiltroJobs.Services.Vets;
 
 namespace FiltroJobs.Services.Vets
 {
@@ -20,12 +17,12 @@ namespace FiltroJobs.Services.Vets
 
         public IEnumerable<Vet> GetAll()
         {
-            return _context.Vets.ToList();
+            return _context.Vets.Include(q => q.Quotes).ToList();
         }
 
         public Vet GetById(int id)
         {
-            return _context.Vets.FirstOrDefault(m => m.Id == id);
+            return _context.Vets.Include(q => q.Quotes).FirstOrDefault(q => q.Id == id);
         }
 
         public void Add(Vet vet)
@@ -39,12 +36,13 @@ namespace FiltroJobs.Services.Vets
             _context.Vets.Update(vet);
             _context.SaveChanges();
         }
+
         public void Delete(int id)
         {
             var vet = _context.Vets.Find(id);
-            if(vet != null)
+            if (vet != null)
             {
-                //cambiar el estado a inactivo
+                // Cambiar el estado a inactivo
                 vet.State = "inactive";
                 _context.Vets.Update(vet);
                 _context.SaveChanges();
@@ -52,4 +50,3 @@ namespace FiltroJobs.Services.Vets
         }
     }
 }
-    

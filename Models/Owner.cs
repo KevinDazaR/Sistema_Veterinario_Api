@@ -12,7 +12,7 @@ namespace FiltroJobs.Models
         public string? Names {get;set;}
 
         [Required]
-        public string? Lastnames { get; set; }
+        public string? LastNames { get; set; }
 
         [Required]
         public string? Email { get; set; }
@@ -25,9 +25,10 @@ namespace FiltroJobs.Models
 
         [Required]
         public string? State { get; set; }
+        
+        [JsonIgnore]
+        public List<Pet> ? Pets {get; set ;} //un dueño puede tener muchas mascotas 
 
-        // [JsonIgnore]
-        // public List<Tratamiento> ? Tratamiento {get;set;} //Consultar - listar
 
         
     }

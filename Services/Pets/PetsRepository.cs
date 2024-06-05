@@ -20,12 +20,12 @@ namespace FiltroJobs.Services.Pets
 
         public IEnumerable<Pet> GetAll()
         {
-            return _context.Pets.ToList();
+            return _context.Pets.Include(o => o.Owners).ToList();
         }
 
         public Pet GetById(int id)
         {
-            return _context.Pets.FirstOrDefault(m => m.Id == id);
+            return _context.Pets.Include(o => o.Owners).FirstOrDefault(o => o.Id == id);
         }
 
         public void Add(Pet pet)

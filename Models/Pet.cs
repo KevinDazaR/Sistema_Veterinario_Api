@@ -1,7 +1,8 @@
-
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization; // Este es el que se necesita agegar para Requiered
+using System.ComponentModel.DataAnnotations.Schema; // Requerido para el ForeignKey
+
 
 namespace FiltroJobs.Models
 {
@@ -21,17 +22,17 @@ namespace FiltroJobs.Models
         public DateTime? DateBirth { get; set; }
 
         [Required]
-        public int? OwnerId { get; set; }
-        
-        [Required]
         public string? Photo { get; set; }
 
         [Required]
         public string? State { get; set; }
 
-        // [JsonIgnore]
-        // public List<Tratamiento> ? Tratamiento {get;set;} //Consultar - listar
+        [ForeignKey("OwnerId") ]
+        public int?  OwnerId {get; set ;}
+        public Owner? Owners {get; set ;} // muchas mascotas tienen un solo dueño
 
+        [JsonIgnore]
+        public List<Quote> Quotes {get; set ;} //una mascota puede tener muchas citas 
         
     }
 }

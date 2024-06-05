@@ -1,4 +1,4 @@
-
+using System.ComponentModel.DataAnnotations.Schema; // Requerido para el ForeignKey
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization; // Este es el que se necesita agegar para Requiered
@@ -23,9 +23,8 @@ namespace FiltroJobs.Models
         [Required]
         public string? State { get; set; }
 
-        // [JsonIgnore]
-        // public List<Tratamiento> ? Tratamiento {get;set;} //Consultar - listar
-
+        [JsonIgnore]
+        public List<Quote> ? Quotes {get; set ;} //un veterinario puede tener muchas citas 
         
     }
 }

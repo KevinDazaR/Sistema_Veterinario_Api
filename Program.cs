@@ -4,6 +4,7 @@ using FiltroJobs.Services.Owners;
 using FiltroJobs.Services.Pets;
 using FiltroJobs.Services.Vets;
 using FiltroJobs.Services.Quotes;
+using FiltroJobs.Services.Emails;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
+builder.Services.AddControllers(); // /para poder que nos deje usar los controladores que llaman los metdoss
 
 
 builder.Services.AddDbContext<BaseContext>(Options =>
@@ -27,6 +28,11 @@ builder.Services.AddScoped<IOwnersRepository, OwnersRepository>(); // Important
 builder.Services.AddScoped<IPetsRepository, PetsRepository>(); // Important
 builder.Services.AddScoped<IVetsRepository, VetsRepository>(); // Important
 builder.Services.AddScoped<IQuotesRepository, QuotesRepository>(); // Important
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<IEmailService, EmailService>();
+
+
 
 var app = builder.Build();
 

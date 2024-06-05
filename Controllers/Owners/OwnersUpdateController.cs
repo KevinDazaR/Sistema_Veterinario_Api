@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FiltroJobs.Services.Owners;
+using FiltroJobs.DTO;
 using FiltroJobs.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,30 +14,30 @@ namespace FiltroJobs.Controllers.Owners
     [Route("api/[controller]")]
     public class OwnersUpdateController : ControllerBase
     {
-        private readonly IOwnersRepository _petsRepository;
+        private readonly IOwnersRepository _ownersRepository;
 
-        public OwnersUpdateController(IOwnersRepository petsRepository)
+        public OwnersUpdateController(IOwnersRepository ownersRepository)
         {
-            _petsRepository = petsRepository;
+            _ownersRepository = ownersRepository;
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateOwner(int id, Owner pet)
+        public IActionResult UpdateOwner(int id, OwnerCreateDTO ownerDTO)
         {
-            if (id != pet.Id)
-            {
-                return BadRequest(new { message = "el Id de la Owner no coincide " });
-            }
+            // if (id != pet.Id)
+            // {
+            //     return BadRequest(new { message = "el Id de la Owner no coincide " });
+            // }
 
             try
             {
-                _petsRepository.Update(pet);
+                _ownersRepository.Update(id,ownerDTO);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (_petsRepository.GetById(id) == null)
+                if (_ownersRepository.GetById(id) == null)
                 {
-                    return NotFound(new { message = "Owner no encontrada" });
+                    return NotFound(new { message = "Owner no encontrado" });
                 }
                 else
                 {
@@ -44,7 +45,7 @@ namespace FiltroJobs.Controllers.Owners
                 }
             }
 
-            return CreatedAtAction(nameof(UpdateOwner), new {id = pet.Id}, "Owner actualizada con exito");
+            return CreatedAtAction(nameof(UpdateOwner), new {ownerDTO}, "Owner actualizada con exito");
         }
 
     }

@@ -13,23 +13,23 @@ namespace FiltroJobs.Controllers
     [Route("api/[controller]")]
     public class OwnersController : ControllerBase
     {
-        private readonly IOwnersRepository _petsRepository;
+        private readonly IOwnersRepository _ownersRepository;
 
-        public OwnersController(IOwnersRepository petsRepository)
+        public OwnersController(IOwnersRepository ownersRepository)
         {
-            _petsRepository = petsRepository;
+            _ownersRepository = ownersRepository;
         }
 
         [HttpGet]
         public IEnumerable<Owner> GetOwners()
         {
-            return _petsRepository.GetAll();
+            return _ownersRepository.GetAll();
         }
 
         [HttpGet("{id}")]
         public IActionResult Details(int id)
         {
-            var pet = _petsRepository.GetById(id);
+            var pet = _ownersRepository.GetById(id);
             if(pet == null)
             {
                 return NotFound(new{message = "Owner no encontrado"});

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FiltroJobs.Services.Quotes;
 using FiltroJobs.Models;
+using FiltroJobs.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace FiltroJobs.Controllers.Quotes
@@ -21,16 +22,16 @@ namespace FiltroJobs.Controllers.Quotes
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateQuote(int id, Quote quote)
+        public IActionResult UpdateQuote(int id, QuoteCreateDTO quoteDTO)
         {
-            if (id != quote.Id)
-            {
-                return BadRequest(new { message = "el Id de la Quote no coincide " });
-            }
+            // if (id != quote.Id)
+            // {
+            //     return BadRequest(new { message = "el Id de la Quote no coincide " });
+            // }
 
             try
             {
-                _quotesRepository.Update(quote);
+                _quotesRepository.Update(id, quoteDTO);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -44,7 +45,7 @@ namespace FiltroJobs.Controllers.Quotes
                 }
             }
 
-            return CreatedAtAction(nameof(UpdateQuote), new {id = quote.Id}, "Quote actualizada con exito");
+            return CreatedAtAction(nameof(UpdateQuote), new {quoteDTO}, "Quote actualizada con exito");
         }
 
     }
